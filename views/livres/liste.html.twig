@@ -1,0 +1,92 @@
+{% extends "base.html.twig" %}
+
+{% block titre %} Page listant les livres {% endblock %}
+{% block contenu %}
+{% if message|length >0 %}
+    <div class="alert alert-{{message.type}}" role="alert">
+    {{message.contenu}}
+    </div>
+{% endif %}
+<table class="table text-center" id="tableauLivres">
+    <thead>
+        <tr class="table-dark">
+            <th>Image</th>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Nombre de pages</th>
+            <th colspan="2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for livre in liste %}
+        <tr class="">
+            <th><img src="images/{{livre.image}}" width="60px"></th>
+            <th><a href="/livres/{{livre._id}}">{{livre.nom}}</a></th>
+            <th><a href="/auteurs/{{livre.auteur._id}}">{{livre.auteur.nom}} - {{livre.auteur.prenom}}256</th>
+            <th>{{livre.pages}}</th>
+            <td><a href="/livres/modification/{{livre._id}}" class="btn btn-warning">Modifier</a></td>
+            <td>
+                <form method="POST" action="/livres/delete/{{livre._id}}" onSubmit= "return confirm('voulez vous vraiment supprimer le livre ?');">
+                    <button class="btn btn-danger" type="submit">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        {# <tr class="">
+            <th><a href="/livres/Toto au quartier">Toto au quartier</a></th>
+            <th>Toto</th>
+            <th>200</th>
+            <td><a href="" class="btn btn-warning">Modifier</a></td>
+            <td><a href="" class="btn btn-danger">Supprimer</a></td>
+        </tr>
+        <tr class="">
+            <th><a href="/livres/Toto au en ville">toto en ville</a></th>
+            <th>Toto</th>
+            <th>200</th>
+            <td><a href="" class="btn btn-warning">Modifier</a></td>
+            <td><a href="" class="btn btn-danger">Supprimer</a></td>
+        </tr>
+        <tr class="">
+            <th><a href="/livres/Toto a la camagne">Toto a la campagne</a></th>
+            <th>Toto</th>
+            <th>200</th>
+            <td><a href="" class="btn btn-warning">Modifier</a></td>
+            <td><a href="" class="btn btn-danger">Supprimer</a></td>
+        </tr> #}
+    </tbody>
+</table>
+<button onClick="afficherFormulaire()" class="w-100 btn btn-success d-block">Ajouter</button>
+
+<form id="ajoutForm" class="d-none" method="POST" action="" enctype="multipart/form-data">
+            <fieldset> 
+                <legend>Création d'un livre</legend>
+                <div class="form-group">
+                    <label for="titre">Titre</label>
+                    <input type="text" class="form-control" id="titre" name="titre">
+                </div>
+                <div class="form-group">
+                    <label for="auteur">Auteur</label>
+                    <select class="form-control" name="auteur" id="auteur">
+                        {% for auteur in auteurs %}
+                        <option value="{{auteur._id}}">{{auteur.nom}} - {{auteur.prenom}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pages">Pages</label>
+                    <input type="number" class="form-control" id="pages" name="pages">
+                </div>
+                <div class="form-group">
+                    <label for="pages">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="image">image</label>
+                    <input type="file" class="form-control-file" id="image" name="image">
+                </div>
+                <button class="btn btn-primary" type="submit">Valider</button>
+                </fieldset>
+        </form>
+        <script src="/javascript/ajoutLivre.js"></script>
+
+{% endblock %} 

@@ -1,0 +1,59 @@
+{% extends "base.html.twig" %}
+
+{% block titre %}Auteur : {{auteur.nom}} - {{auteur.prenom}}{% endblock %}
+{% block contenu %}
+    {% if isModification %}
+        <form method="POST" action="/auteurs/modificationServer">
+            <fieldset> 
+                <legend>Création d'un Auteur</legend>
+                <div class="form-group">
+                    <label for="titre">Prenom</label>
+                    <input type="text" class="form-control" id="prenom" name="prenom" value="{{auteur.prenom}}">
+                </div>
+                <div class="form-group">
+                    <label for="titre">Nom</label>
+                    <input type="text" class="form-control" id="nom" name="nom" value="{{auteur.nom}}">
+                </div>
+                <div class="form-group">
+                    <label for="auteur">Age</label>
+                    <input type="number" class="form-control" name="age" id="age" value="{{auteur.age}}">
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="sexe" name="sexe"
+                    {% if auteur.sexe %} checked {% endif %}
+                    >
+                    <label class="form-check-label" for="defaultCheck1">Homme</label>
+                </div>   
+                    <input type="hidden" name="identifiant" value="{{auteur._id}}" >     
+                <button class="btn btn-primary" type="submit">Valider</button>
+                </fieldset>
+        </form>
+    {% else %}
+        <h2>Nom : {{ auteur.nom }}</h2>
+        <h2>Prenom : {{ auteur.prenom }}</h2>
+        <div>Age : {{auteur.age}}</div>
+        <div>Sexe : {% if auteur.sexe %}
+            Homme
+        {% else %}
+            Femme
+        {% endif %}
+        </div>
+        <h2>Livres</h2>
+        <div class="row">
+            {% for livre in auteur.livres %}
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-6">
+                        <img src="/images/{{livre.image}}" alt="">
+                    </div>
+
+                    <div class="col-6">
+                        <div>Titre : <a href="/livres/{{livres._id}}">{{livre.nom}}</a></div>
+                        <div> Nombre de pages : {{livre.pages}}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %} 
